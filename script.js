@@ -1,24 +1,20 @@
-let selectedDuration = "";
-let selectedPrice = "";
+const accordions = document.querySelectorAll(".accordion");
 
-function showPopup(duration, price) {
-    selectedDuration = duration;
-    selectedPrice = price;
+accordions.forEach((accordion, index) => {
+  const header = accordion.querySelector(".accordion__header");
+  const content = accordion.querySelector(".accordion__content");
+  const icon = accordion.querySelector("#accordion-icon");
 
-    const popupOverlay = document.getElementById("popupOverlay");
-    const popupText = document.getElementById("popupText");
+  header.addEventListener("click", () => {
+    const isOpen = content.style.height === `${content.scrollHeight}px`;
 
-    popupText.textContent = `Yakin kamu memilih durasi ${duration} dengan harga ${price}?\n
-    Apabila sudah selesai pembayaran , Silahkan hubungi Tiktok/Discord Iqbal Dwiansyah`;
-    popupOverlay.style.display = "flex";
+    accordions.forEach((a, i) => {
+      const c = a.querySelector(".accordion__content");
+      const ic = a.querySelector("#accordion-icon");
 
-    // Tombol Ya, saya setuju → hanya buka Sociabuzz di tab baru
-    document.getElementById("btnYes").onclick = function () {
-        window.open("https://sociabuzz.com/iqbaldwiansyah/support", "_blank");
-        closePopup();
-    };
-}
-
-function closePopup() {
-    document.getElementById("popupOverlay").style.display = "none";
-}
+      c.style.height = i === index && !isOpen ? `${c.scrollHeight}px` : "0px";
+      ic.classList.toggle("ri-add-line", i !== index || !isOpen);
+      ic.classList.toggle("ri-subtract-fill", i === index && !isOpen);
+    });
+  });
+});
